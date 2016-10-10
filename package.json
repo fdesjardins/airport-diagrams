@@ -1,0 +1,52 @@
+{
+  "name": "airport-diagrams",
+  "version": "0.0.0",
+  "description": "Fetch airport diagrams information",
+  "main": "index.js",
+  "repository": "fdesjardins/airport-diagrams",
+  "author": {
+    "name": "Forrest Desjardins",
+    "email": "desjardinsfg@gmail.com",
+    "url": "github.com/fdesjardins"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "eslint *.js && nyc ./node_modules/.bin/mocha --opts mocha.opts test.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "charts",
+    "airports",
+    "aviation",
+    "diagrams",
+    "faa",
+    "api",
+    "documents"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "cheerio": "^0.22.0",
+    "request": "^2.75.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.14",
+    "eslint": "^3.7.1",
+    "eslint-config-standard": "^6.2.0",
+    "eslint-plugin-promise": "^3.0.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "mocha": "^3.1.0",
+    "nyc": "^8.3.1"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
