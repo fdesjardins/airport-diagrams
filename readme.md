@@ -22,7 +22,7 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
 
 ### Output
 
-```
+```json
 [
   [
     {
