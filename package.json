@@ -1,6 +1,6 @@
 {
   "name": "airport-diagrams",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Fetch airport diagrams information",
   "main": "index.js",
   "repository": "fdesjardins/airport-diagrams",
