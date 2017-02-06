@@ -15,9 +15,17 @@ airportDiagrams.list = (icaos, options = {}) => {
   return listOne(icaos)
 }
 
+const fetchCurrentCycle = request('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
+  .then(res => {
+    const $ = cheerio.load(res.body)
+    return $('select#cycle > option:contains(Current)').val()
+  })
+
 const listOne = (icao) => {
-  return request(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=1701&ident=${icao}&sort=type&dir=asc`)
-    .then(res => parse(res.body))
+  return fetchCurrentCycle.then(searchCycle => {
+    return request(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
+      .then(res => parse(res.body))
+  })
 }
 
 // Parse the response HTML
