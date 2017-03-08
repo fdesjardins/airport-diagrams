@@ -23,6 +23,12 @@ describe('airportDiagrams', () => {
     })
   })
 
+  it('should expose the fetchCurrentCycle method', () => {
+    return airportDiagrams.fetchCurrentCycle().then(cycle => {
+      assert(parseInt(cycle))
+    })
+  })
+
   it('should fetch airport diagrams for an array of ICAOs using the list method', () => {
     return airportDiagrams.list(['PANC', 'KJAX']).then(diagrams => {
       assert(diagrams.length === 2)
