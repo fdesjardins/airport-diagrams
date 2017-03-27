@@ -1,5 +1,4 @@
-const Promise = require('bluebird')
-const request = Promise.promisify(require('request'))
+const axios = require('axios')
 const cheerio = require('cheerio')
 
 // Provide a shortcut to the list method
@@ -15,16 +14,16 @@ airportDiagrams.list = (icaos, options = {}) => {
   return listOne(icaos)
 }
 
-const fetchCurrentCycle = airportDiagrams.fetchCurrentCycle = () => request('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
+const fetchCurrentCycle = airportDiagrams.fetchCurrentCycle = () => axios.get('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
   .then(res => {
-    const $ = cheerio.load(res.body)
+    const $ = cheerio.load(res.data)
     return $('select#cycle > option:contains(Current)').val()
   })
 
 const listOne = (icao) => {
   return fetchCurrentCycle().then(searchCycle => {
-    return request(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
-      .then(res => parse(res.body))
+    return axios.get(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
+      .then(res => parse(res.data))
   })
 }
 
