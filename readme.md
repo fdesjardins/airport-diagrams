@@ -35,7 +35,7 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
       "type": "APD",
       "procedure": {
         "name": "AIRPORT DIAGRAM (PDF)",
-        "url": "http://aeronav.faa.gov/d-tpp/1610/01500ad.pdf#search=PANC"
+        "url": "http://aeronav.faa.gov/d-tpp/1704/01500ad.pdf#nameddest=(ANC)"
       },
       "compare": {
         "name": "N/A"
@@ -49,15 +49,14 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
       "airport": "SEATTLE-TACOMA INTL",
       "ident": "SEA (KSEA)",
       "vol": "NW-1",
-      "flag": "C",
+      "flag": "",
       "type": "APD",
       "procedure": {
         "name": "AIRPORT DIAGRAM (PDF)",
-        "url": "http://aeronav.faa.gov/d-tpp/1610/00582ad.pdf#search=KSEA"
+        "url": "http://aeronav.faa.gov/d-tpp/1704/00582ad.pdf#nameddest=(SEA)"
       },
       "compare": {
-        "name": "Compare (PDF)",
-        "url": "http://aeronav.faa.gov/d-tpp/1610/compare_pdf/00582ad_cmp.pdf"
+        "name": "N/A"
       }
     }
   ]
