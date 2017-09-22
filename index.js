@@ -1,4 +1,4 @@
-const axios = require('axios')
+const superagent = require('superagent')
 const cheerio = require('cheerio')
 
 // Provide a shortcut to the list method
@@ -14,21 +14,24 @@ airportDiagrams.list = (icaos, options = {}) => {
   return listOne(icaos)
 }
 
-const fetchCurrentCycle = airportDiagrams.fetchCurrentCycle = () => axios.get('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
-  .then(res => {
-    const $ = cheerio.load(res.data)
-    return $('select#cycle > option:contains(Current)').val()
-  })
+const fetchCurrentCycle = airportDiagrams.fetchCurrentCycle = () => {
+  return superagent.get('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
+    .then(res => {
+      const $ = cheerio.load(res.text)
+      return $('select#cycle > option:contains(Current)').val()
+    })
+}
 
-const listOne = (icao) => {
+const listOne = icao => {
   return fetchCurrentCycle().then(searchCycle => {
-    return axios.get(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
-      .then(res => parse(res.data))
+    return superagent.get(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
+      .then(res => parse(res.text))
+      .catch(err => console.error(err))
   })
 }
 
 // Parse the response HTML
-const parse = (html) => {
+const parse = html => {
   const $ = cheerio.load(html)
   const $resultsTable = $('#resultsTable')
 
