@@ -1,10 +1,11 @@
 # airport-diagrams
 
-[![Build Status][travis-image]][travis-url]
-[![NPM Version][npm-image]][npm-url]
-[![Coverage][coveralls-image]][coveralls-url]
-
 Fetch the latest airport diagrams from https://www.faa.gov/
+
+[![NPM Version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Coverage][coveralls-image]][coveralls-url]
+[![Maintainability][code-climate-image]][code-climate-url]
 
 ## Installation
 
@@ -66,6 +67,7 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
 ## API
 
 ### `airportDiagrams(icaos)`
+
 ### `airportDiagrams.list(icaos)`
 
 #### `icaos`
@@ -73,6 +75,7 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
 Type: `string` or `array`
 
 One of the following:
+
 - a single ICAO code
 - an array of ICAO codes
 
@@ -88,3 +91,5 @@ MIT © [Forrest Desjardins](https://github.com/fdesjardins)
 [travis-image]: https://img.shields.io/travis/fdesjardins/airport-diagrams.svg?style=flat
 [coveralls-url]: https://coveralls.io/r/fdesjardins/airport-diagrams
 [coveralls-image]: https://img.shields.io/coveralls/fdesjardins/airport-diagrams.svg?style=flat
+[code-climate-url]: https://codeclimate.com/github/fdesjardins/airport-diagrams/maintainability
+[code-climate-image]: https://api.codeclimate.com/v1/badges/f7f7ef72ffc973ada6ab/maintainability
