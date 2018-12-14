@@ -1,36 +1,15 @@
 {
   "name": "airport-diagrams",
-  "version": "1.1.25",
   "description": "Fetch airport diagrams information",
-  "main": "index.js",
-  "repository": "fdesjardins/airport-diagrams",
+  "version": "1.1.25",
   "author": {
     "name": "Forrest Desjardins",
     "email": "desjardinsfg@gmail.com",
     "url": "github.com/fdesjardins"
   },
-  "engines": {
-    "node": ">=6"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/standard *.js && nyc ./node_modules/.bin/mocha --opts mocha.opts test.js"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "charts",
-    "airports",
-    "aviation",
-    "diagrams",
-    "faa",
-    "api",
-    "documents"
-  ],
-  "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "superagent": "^4.0.0-beta.5"
+    "superagent": "^4.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -39,10 +18,31 @@
     "nyc": "^13.0.1",
     "standard": "^12.0.1"
   },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "airports",
+    "api",
+    "aviation",
+    "charts",
+    "diagrams",
+    "documents",
+    "faa"
+  ],
+  "license": "MIT",
+  "main": "index.js",
   "nyc": {
     "reporter": [
       "lcov",
       "text"
     ]
+  },
+  "repository": "fdesjardins/airport-diagrams",
+  "scripts": {
+    "test": "standard *.js && nyc mocha --opts mocha.opts test.js"
   }
 }
