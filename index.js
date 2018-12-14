@@ -1,80 +1,101 @@
-const superagent = require('superagent')
 const cheerio = require('cheerio')
+const superagent = require('superagent')
 
-// Provide a shortcut to the list method
-const airportDiagrams = module.exports = (icaos, options = {}) => {
+/**
+ *  A shortcut to the list() method
+ */
+const airportDiagrams = (module.exports = (icaos, options = {}) => {
   return airportDiagrams.list(icaos, options)
-}
+})
 
-// Main listing method; accepts one or more ICAO codes
-airportDiagrams.list = (icaos, options = {}) => {
+/**
+ * Main listing method; accepts one or more ICAO codes
+ */
+airportDiagrams.list = icaos => {
   if (Array.isArray(icaos)) {
     return Promise.all(icaos.map(listOne))
   }
   return listOne(icaos)
 }
 
-const fetchCurrentCycle = airportDiagrams.fetchCurrentCycle = () => {
-  return superagent.get('https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/')
-    .then(res => {
-      const $ = cheerio.load(res.text)
-      return $('select#cycle > option:contains(Current)').val()
-    })
+/**
+ * Fetch the current diagrams distribution cycle numbers (.e.g, 1813)
+ */
+const fetchCurrentCycle = (airportDiagrams.fetchCurrentCycle = async () => {
+  const response = await superagent.get(
+    'https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/'
+  )
+  const $ = cheerio.load(response.text)
+  return $('select#cycle > option:contains(Current)').val()
+})
+
+/**
+ * Using the current cycle, fetch the airport diagrams for a single ICAO code
+ */
+const listOne = async icao => {
+  const searchCycle = await fetchCurrentCycle()
+  const response = await superagent.get(
+    `https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`
+  )
+  return parse(response.text)
 }
 
-const listOne = icao => {
-  return fetchCurrentCycle().then(searchCycle => {
-    return superagent.get(`https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dtpp/search/results/?cycle=${searchCycle}&ident=${icao}&sort=type&dir=asc`)
-      .then(res => parse(res.text))
-      .catch(err => console.error(err))
-  })
+/**
+ * Parsing helper methods
+ */
+const text = ($row, columnIndex) =>
+  $row
+    .find(`td:nth-child(${columnIndex})`)
+    .text()
+    .trim()
+
+const link = ($row, columnIndex) =>
+  $row
+    .find(`td:nth-child(${columnIndex})`)
+    .find('a')
+    .attr('href')
+
+const extractRow = $row => {
+  return {
+    state: text($row, 1),
+    city: text($row, 2),
+    airport: text($row, 3),
+    ident: text($row, 4),
+    vol: text($row, 5),
+    flag: text($row, 6),
+    procedure: {
+      name: text($row, 8),
+      url: link($row, 8)
+    },
+    compare: {
+      name: text($row, 9),
+      url: link($row, 9)
+    }
+  }
 }
 
-// Parse the response HTML
+const isDiagramRow = $row => text($row, 7) === 'APD'
+
+/**
+ *  Parse the response HTML into JSON
+ */
 const parse = html => {
   const $ = cheerio.load(html)
   const $resultsTable = $('#resultsTable')
 
   if (!$resultsTable.html()) {
+    console.error('Unable to parse the #resultsTable page element')
     return null
   }
 
-  const results = $resultsTable.find('tr').toArray().map(row => {
-    const $row = $(row)
-    const type = $row.find('td:nth-child(7)').text().trim()
-
-    if (type === 'APD') {
-      const state = $row.find('td:nth-child(1)').text().trim()
-      const city = $row.find('td:nth-child(2)').text().trim()
-      const airport = $row.find('td:nth-child(3)').text().trim()
-      const ident = $row.find('td:nth-child(4)').text().trim()
-      const vol = $row.find('td:nth-child(5)').text().trim()
-      const flag = $row.find('td:nth-child(6)').text().trim()
-      const procedure = {
-        name: $row.find('td:nth-child(8)').text().trim(),
-        url: $row.find('td:nth-child(8)').find('a').attr('href')
-      }
-      const compare = {
-        name: $row.find('td:nth-child(9)').text().trim(),
-        url: $row.find('td:nth-child(9)').find('a').attr('href')
-      }
-
-      return {
-        state,
-        city,
-        airport,
-        ident,
-        vol,
-        flag,
-        type,
-        procedure,
-        compare
-      }
-    }
-  }).filter(x => !!x)
+  const results = $resultsTable
+    .find('tr')
+    .toArray()
+    .filter(row => isDiagramRow($(row)))
+    .map(row => extractRow($(row)))
+    .filter(x => !!x)
 
   if (results.length > 0) {
     return results
   }
-  return null
 }
