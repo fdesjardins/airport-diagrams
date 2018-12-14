@@ -16,14 +16,17 @@ $ npm install --save airport-diagrams
 ## Usage
 
 ```js
-airportDiagrams.list(['PANC', 'KSEA']).then(results => {
-  console.log(JSON.stringify(results, null, 2))
-})
+const cycle = await airportDiagrams.fetchCurrentCycle()
+console.log('Current cycle:', cycle)
+
+const diagrams = await airportDiagrams.list(['PANC', 'KSEA'])
+console.log(JSON.stringify(diagrams, null, 2))
 ```
 
 ### Output
 
 ```json
+Current cycle: 1813
 [
   [
     {
@@ -33,10 +36,9 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
       "ident": "ANC (PANC)",
       "vol": "AK-1",
       "flag": "",
-      "type": "APD",
       "procedure": {
         "name": "AIRPORT DIAGRAM (PDF)",
-        "url": "http://aeronav.faa.gov/d-tpp/1704/01500ad.pdf#nameddest=(ANC)"
+        "url": "http://aeronav.faa.gov/d-tpp/1813/01500ad.pdf#nameddest=(ANC)"
       },
       "compare": {
         "name": "N/A"
@@ -51,10 +53,9 @@ airportDiagrams.list(['PANC', 'KSEA']).then(results => {
       "ident": "SEA (KSEA)",
       "vol": "NW-1",
       "flag": "",
-      "type": "APD",
       "procedure": {
         "name": "AIRPORT DIAGRAM (PDF)",
-        "url": "http://aeronav.faa.gov/d-tpp/1704/00582ad.pdf#nameddest=(SEA)"
+        "url": "http://aeronav.faa.gov/d-tpp/1813/00582ad.pdf#nameddest=(SEA)"
       },
       "compare": {
         "name": "N/A"
@@ -80,6 +81,8 @@ One of the following:
 - an array of ICAO codes
 
 ### `airportDiagrams.fetchCurrentCycle()`
+
+Fetch the current diagrams distribution cycle numbers (.e.g, 1813)
 
 ## License
 
