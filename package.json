@@ -8,15 +8,15 @@
     "url": "github.com/fdesjardins"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "superagent": "^5.1.0"
+    "cheerio": "^1.0.0-rc.3",
+    "superagent": "^5.2.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "coveralls": "^3.0.6",
-    "mocha": "^6.2.0",
-    "nyc": "^14.1.1",
-    "standard": "^14.1.0"
+    "coveralls": "^3.0.9",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "standard": "^14.3.1"
   },
   "engines": {
     "node": ">=6"
