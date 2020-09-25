@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "superagent": "^5.2.1"
+    "superagent": "^6.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "coveralls": "^3.0.9",
-    "mocha": "^7.0.1",
-    "nyc": "^15.0.0",
-    "standard": "^14.3.1"
+    "coveralls": "^3.1.0",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "standard": "^14.3.4"
   },
   "engines": {
     "node": ">=6"
@@ -43,6 +43,6 @@
   },
   "repository": "fdesjardins/airport-diagrams",
   "scripts": {
-    "test": "standard *.js && nyc mocha --opts mocha.opts test.js"
+    "test": "standard *.js && nyc mocha test.js"
   }
 }
