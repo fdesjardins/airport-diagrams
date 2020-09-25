@@ -1,7 +1,7 @@
 {
   "name": "airport-diagrams",
   "description": "Fetch airport diagrams information",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "author": {
     "name": "Forrest Desjardins",
     "email": "desjardinsfg@gmail.com",
